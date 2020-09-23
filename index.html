@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="number" oninput="inputMoney(this)" placeholder="请输入要播报的金额">
+    <button onclick="play('alipay')">点击播报</button>
+    <audio id="myaudio" src="" onended="endPlay(this)">
+        不支持audio标签
+    </audio>
+</body>
+
+<script type="text/javascript">
+    let audio = document.getElementById("myaudio");
+    let arrAudio = [];     //存放语音的地方
+    let arrNex = 0;
+    let money = 0;
+
+    function play(type) {
+        arrAudio.push(type+'_recive');
+        for (let i = 0; i < money.length; i++) {
+            switch (money[i]) {
+                case '零':
+                arrAudio.push('0');
+                break;
+
+                case '壹':
+                arrAudio.push('1');
+                break;
+
+                case '贰':
+                arrAudio.push('2');
+                break;
+
+                case '叁':
+                arrAudio.push('3');
+                break;
+
+                case '肆':
+                arrAudio.push('4');
+                break;
+
+                case '伍':
+                arrAudio.push('5');
+                break;
+
+                case '陆':
+                arrAudio.push('6');
+                break;
+                
+                case '柒':
+                arrAudio.push('7');
+                break;
+
+                case '捌':
+                arrAudio.push('8');
+                break;
+
+                case '玖':
+                arrAudio.push('9');
+                break;
+
+                case '拾':
+                arrAudio.push('10');
+                break;
+
+                case '百':
+                arrAudio.push('100');
+                break;
+
+                case '千':
+                arrAudio.push('1000');
+                break;
+
+                case '万':
+                arrAudio.push('10000');
+                break;
+
+                case '亿':
+                arrAudio.push('10000000');
+                break;
+
+                case '分':
+                arrAudio.push('fen');
+                break;
+
+                case '角':
+                arrAudio.push('jiao');
+                break;
+
+                case '元':
+                arrAudio.push('yuan');
+                break;
+
+                case '整':
+                arrAudio.push('zheng');
+                break;
+            }
+        }
+        // arrAudio = arrAudio.concat([1,10000000,2,1000,3,100,4,10,5,10000,6,1000,7,100,8,10,9,'dian',8,6,'yuan']);
+        audio.src = 'audio/' + arrAudio[arrNex] + '.mp3';
+        audio.play();
+    }
+    function inputMoney(e) {
+        money = DX(e.value);
+        console.log(money);
+    }
+    function endPlay(e) {
+        arrNex = arrNex + 1;
+        if (arrNex < arrAudio.length) {
+            e.src = 'audio/' + arrAudio[arrNex] + '.mp3';
+            e.play();
+            return;
+        }
+    }
+
+    function DX(n) {
+        if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(n))
+            return "数据非法";
+        var unit = "千百拾亿千百拾万千百拾元角分", str = "";
+        n += "00";
+        var p = n.indexOf('.');
+        if (p >= 0)
+            n = n.substring(0, p) + n.substr(p + 1, 2);
+        unit = unit.substr(unit.length - n.length);
+        for (var i = 0; i < n.length; i++)
+            str += '零壹贰叁肆伍陆柒捌玖'.charAt(n.charAt(i)) + unit.charAt(i);
+        return str.replace(/零(千|百|拾|角)/g, "零").replace(/(零)+/g, "零").replace(/零(万|亿|元)/g, "$1").replace(/(亿)万|壹(拾)/g, "$1$2").replace(/^元零?|零分/g, "").replace(/元$/g, "元整");
+    }
+</script>
+
+</html>

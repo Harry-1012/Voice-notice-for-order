@@ -8,9 +8,14 @@
 </head>
 
 <body>
-
+    <br>
     <input type="number" oninput="inputMoney(this)" placeholder="请输入要播报的金额">
-    <button onclick="play('alipay')">点击播报</button>
+    <br>
+    <br>
+    <button onclick="play('alipay')">支付宝收款播报</button>
+    <br>
+    <br>
+    <button onclick="play('wechat')">wechat收款播报</button>
     <audio id="myaudio" src="" onended="endPlay(this)">
         不支持audio标签
     </audio>
@@ -23,6 +28,10 @@
     let money = 0;
 
     function play(type) {
+        if(!money){
+            alert('请输入金额');
+            return;
+        }
         arrAudio.push(type+'_recive');
         for (let i = 0; i < money.length; i++) {
             switch (money[i]) {
